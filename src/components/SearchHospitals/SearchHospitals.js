@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 //Component to search the hospitals based on State and City selection.
 //API used to fetch details of hospital and set the values in formData
-export default function SearchHospital() {
+export default function SearchHospital({onSearch}) {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [formData, setFormData] = useState({ state: "", city: "" });
@@ -125,6 +125,8 @@ export default function SearchHospital() {
         startIcon={<SearchIcon />}
         sx={{ py: "15px", px: 8, flexShrink: 0 }}
         disableElevation
+        id="searchBtn" 
+        onClick={onSearch}
       >
         Search
       </Button>

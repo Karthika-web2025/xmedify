@@ -26,26 +26,26 @@ export default function Search() {
   const [isLoading, setIsLoading] = useState(false);
 
   //API to fetch hospitals based on state and city selection 
-  useEffect(() => {
-    const getHospitals = async () => {
-      setHospitals([]);
-      setIsLoading(true);
-      try {
-        const data = await axios.get(
-          `https://meddata-backend.onrender.com/data?state=${state}&city=${city}`
-        );
-        setHospitals(data.data);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-      }
-    };
+//   useEffect(() => {
+//     const getHospitals = async () => {
+//       setHospitals([]);
+//       setIsLoading(true);
+//       try {
+//         const data = await axios.get(
+//           `https://meddata-backend.onrender.com/data?state=${state}&city=${city}`
+//         );
+//         setHospitals(data.data);
+//         setIsLoading(false);
+//       } catch (err) {
+//         console.log(err);
+//         setIsLoading(false);
+//       }
+//     };
 
-    if (state && city) {
-      getHospitals();
-    }
-  }, [state, city]);
+//     if (state && city) {
+//       getHospitals();
+//     }
+//   }, [state, city]);
 
   useEffect(() => {
     setState(seachParams.get("state"));
@@ -57,6 +57,25 @@ export default function Search() {
     setBookingDetails(details);
     setIsModalOpen(true);
   };
+
+  const getHospitals = async () => {
+  if (!state || !city) return;
+
+  setHospitals([]);
+  setIsLoading(true);
+
+  try {
+    const response = await axios.get(
+      `https://meddata-backend.onrender.com/data?state=${state}&city=${city}`
+    );
+    setHospitals(response.data);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -87,7 +106,7 @@ export default function Search() {
               boxShadow: "0 0 10px rgba(0,0,0,0.1)",
             }}
           >
-            <SearchHospital />
+            <SearchHospital onSearch={getHospitals} />
           </Container>
         </Box>
 
